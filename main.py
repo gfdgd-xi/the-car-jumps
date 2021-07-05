@@ -10,6 +10,7 @@ import sys
 import time
 import random
 import pygame
+#import winsound
 import threading
 
 
@@ -27,14 +28,15 @@ def Up():
         return
     if jumpTime:
         return
-    if carPlace[1] <= 0:
-        carPlace[1] = 0
-        return
+    #if carPlace[1] <= 0:
+        #carPlace[1] = 0
+        #return
     for i in range(4):
         carPlace[1] = carPlace[1] - 50
         time.sleep(0.01)
     jumpTime = True
     jumpTimes = jumpTimes + 1
+    #winsound.Beep(600,1000)
 
 
 def Down():
@@ -45,9 +47,9 @@ def Down():
     while not close:
         time.sleep(0.01)
         if carPlace[1] >= 500 - int(1685 / 14):
-            if (bigRoadPlace1[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace1[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace2[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace2[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace3[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace3[0] <= carPlace[0] + carLong / 2) == 2:
-                jumpTime = False
-                continue
+            #if (bigRoadPlace1[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace1[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace2[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace2[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace3[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace3[0] <= carPlace[0] + carLong / 2) == 2:
+            jumpTime = False
+            continue
         if carPlace[1] + carHeight / 2 > bigRoadPlace1[1]:
             over = True
             while not close:
@@ -59,6 +61,7 @@ def Down():
                         dolphinPlace[1] = dolphinPlace[1] + 5
                         time.sleep(0.01)
                     break
+            #ReStartProgram()
             break
         carPlace[1] = carPlace[1] + 5
 
@@ -83,6 +86,7 @@ def RandomRoad():
 def MoveRoad():
     global tips
     global suDu
+    global background
     global suDuOld
     global second
     global minute
@@ -121,6 +125,7 @@ def MoveRoad():
             tips = pygame.transform.scale(dolphinPicture, (450, 450))
             tipsPlace = [1024, 50]
         elif minute > 0 and second == 0:
+            background = (random.randint(0, 250), random.randint(0, 250), random.randint(0, 250))
             tips = pygame.transform.scale(tipsPicture, (450, 450))
             tipsPlace = [1024, 50]
     
@@ -138,7 +143,7 @@ def Time():
     second = 0
     minute = 0
     while not close:
-        second = second + 1
+        second = second + 3
         if second >= 60:
             second = 0
             minute = minute + 1
@@ -196,9 +201,11 @@ dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
 treePlace = [-1024, 500 - int(2879 / 10)]
 carPlace = [1024 / 2 - 300 / 2, 500 - int(1685 / 14)]
 tipsPlace = [1024 - 450, 50]
-background = (0, 100, 250)
+#background = (0, 100, 250)
+background = (random.randint(0, 250), random.randint(0, 250), random.randint(0, 250))
 pygame.display.set_caption("Demo")
-screen = pygame.display.set_mode((1024, 768))
+#screen = pygame.display.set_mode((1024, 768))
+screen = pygame.display.set_mode((1024, 768), pygame.FULLSCREEN|pygame.HWSURFACE)
 close = False
 over = False
 jumpTime = False
