@@ -28,9 +28,6 @@ def Up():
         return
     if jumpTime:
         return
-    #if carPlace[1] <= 0:
-        #carPlace[1] = 0
-        #return
     for i in range(4):
         carPlace[1] = carPlace[1] - 50
         time.sleep(0.01)
@@ -47,9 +44,9 @@ def Down():
     while not close:
         time.sleep(0.01)
         if carPlace[1] >= 500 - int(1685 / 14):
-            #if (bigRoadPlace1[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace1[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace2[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace2[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace3[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace3[0] <= carPlace[0] + carLong / 2) == 2:
-            jumpTime = False
-            continue
+            if (bigRoadPlace1[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace1[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace2[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace2[0] <= carPlace[0] + carLong / 2) == 2 or (bigRoadPlace3[0] + 1141 >= carPlace[0] + carLong / 2) + (bigRoadPlace3[0] <= carPlace[0] + carLong / 2) == 2:
+                jumpTime = False
+                continue
         if carPlace[1] + carHeight / 2 > bigRoadPlace1[1]:
             over = True
             while not close:
@@ -61,7 +58,6 @@ def Down():
                         dolphinPlace[1] = dolphinPlace[1] + 5
                         time.sleep(0.01)
                     break
-            #ReStartProgram()
             break
         carPlace[1] = carPlace[1] + 5
 
@@ -143,7 +139,7 @@ def Time():
     second = 0
     minute = 0
     while not close:
-        second = second + 3
+        second = second + 1
         if second >= 60:
             second = 0
             minute = minute + 1
