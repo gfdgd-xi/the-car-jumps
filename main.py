@@ -3,7 +3,7 @@
 # 作者：gfdgd xi
 # 版本：1.0
 #########################
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import os
 import json
 import sys
@@ -39,6 +39,7 @@ def Up():
 
 def Down():
     global jumpTime
+    global dolphinPlace
     global carLong
     global over
     while not close:
@@ -51,30 +52,36 @@ def Down():
             over = True
             while not close:
                 carPlace[1] = carPlace[1] + 5
+                dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
                 time.sleep(0.01)
-                if carPlace[0] > 768:
+                if carPlace[1] > 768:
+                    while not dolphinPlace[1] > 768:
+                        dolphinPlace[1] = dolphinPlace[1] + 5
+                        time.sleep(0.01)
                     break
             break
         carPlace[1] = carPlace[1] + 5
 
-
 def RandomRoad():
+    global smallRoad
+    global bigRoad
     beautiful = random.randint(1, 6)
     if beautiful == 1:
-        return pygame.transform.scale(pygame.image.load("BigRoad.png"), (1141, 191))
+        return pygame.transform.scale(bigRoad, (1141, 191))
     elif beautiful == 2:
-        return pygame.transform.scale(pygame.image.load("SmallRoad.png"), (1141, int(191 / 2)))
+        return pygame.transform.scale(smallRoad, (1141, int(191 / 2)))
     elif beautiful == 3:
-        return pygame.transform.scale(pygame.image.load("BigRoad.png"), (1141, int(191 / 2)))
+        return pygame.transform.scale(bigRoad, (1141, int(191 / 2)))
     elif beautiful == 4:
-        return pygame.transform.scale(pygame.image.load("SmallRoad.png"), (1141, int(191 / 4)))
+        return pygame.transform.scale(smallRoad, (1141, int(191 / 4)))
     elif beautiful == 5:
-        return pygame.transform.scale(pygame.image.load("BigRoad.png"), (1141, int(191 / 4)))
+        return pygame.transform.scale(bigRoad, (1141, int(191 / 4)))
     else:
-        return pygame.transform.scale(pygame.image.load("SmallRoad.png"), (1141, 191))
+        return pygame.transform.scale(smallRoad, (1141, 191))
 
 
 def MoveRoad():
+    global tips
     global suDu
     global suDuOld
     global second
@@ -87,11 +94,14 @@ def MoveRoad():
     global bigRoadPlace3
     global treePlace
     global tipsPlace
+    global tipsPicture
+    global dolphinPicture
     while not close:
         bigRoadPlace1[0] = bigRoadPlace1[0] - suDu
         bigRoadPlace2[0] = bigRoadPlace2[0] - suDu
         bigRoadPlace3[0] = bigRoadPlace3[0] - suDu
         treePlace[0] = treePlace[0] - suDu
+        tipsPlace[0] = tipsPlace[0] - suDu
         if bigRoadPlace1[0] < -1111 - random.randint(0, 900):
             bigRoadPlace1 = [0 + 1141 + 1141, 500]
             bigRoad1 = RandomRoad()
@@ -101,13 +111,19 @@ def MoveRoad():
         if bigRoadPlace3[0] < -1111 - random.randint(0, 900):
             bigRoadPlace3 = [0 + 1141 + 1141, 500]
             bigRoad3 = RandomRoad()
-        if tipsPlace[0] >= -450:
-            tipsPlace[0] = tipsPlace[0] - suDu
         elif suDuOld is not 10:
             suDu = 10
             suDuOld = suDu
-        if second == 0 and minute > 0:
+        
+        if int(second / 5) == second / 5:
             treePlace = [1024, 500 - int(2879 / 5) + 100]
+        if int(minute / 5) == minute / 5 and second == 0 and minute > 0:
+            tips = pygame.transform.scale(dolphinPicture, (450, 450))
+            tipsPlace = [1024, 50]
+        elif minute > 0 and second == 0:
+            tips = pygame.transform.scale(tipsPicture, (450, 450))
+            tipsPlace = [1024, 50]
+    
         if over:
             break
         time.sleep(0.01)
@@ -136,6 +152,10 @@ def Time():
             minuteString = str(minute)
         if over:
             break
+        if int(second / 2) == second / 2:
+            dolphinPlace[1] = dolphinPlace[1] - 20
+        else:
+            dolphinPlace[1] = dolphinPlace[1] + 20
         textSurfaceObj2 = fontObj2.render("Time: {}:{};\nJump Time: {};\nNow: Play".format(
             minuteString, secondString, jumpTimes), False, (250, 250, 250))
         time.sleep(1)
@@ -150,23 +170,29 @@ def ReStartProgram():
     os.execl(python, python, * sys.argv)
 
 pygame.init()
+bigRoad = pygame.image.load("BigRoad.png")
+smallRoad = pygame.image.load("SmallRoad.png")
+tipsPicture = pygame.image.load("Tips.png")
+sharpPicture = pygame.image.load("Sharp.png")
+dolphinPicture = pygame.image.load("Dolphin.png")
 bigRoad1 = pygame.transform.scale(
-    pygame.image.load("BigRoad.png"), (1141, 191))
+    bigRoad, (1141, 191))
 bigRoad2 = pygame.transform.scale(
-    pygame.image.load("SmallRoad.png"), (1141, int(191 / 2)))
+    smallRoad, (1141, int(191 / 2)))
 bigRoad3 = pygame.transform.scale(
-    pygame.image.load("SmallRoad.png"), (1141, 191))
+    smallRoad, (1141, 191))
 car = pygame.transform.scale(pygame.image.load(
     "Car.png"), (int(2780 / 14), int(1685 / 14)))
-tips = pygame.transform.scale(pygame.image.load("Tips.png"), (450, 450))
-dolphin = pygame.transform.scale(pygame.image.load("Dolphin.png"), (300, 300))
+tips = pygame.transform.scale(tipsPicture, (450, 450))
+dolphin = pygame.transform.scale(sharpPicture, (int(2918 / 5), int(1202 / 5)))
 tree = pygame.transform.scale(pygame.image.load("tree.png"), (int(1919 / 5), int(2879 / 5)))
+#tree = pygame.transform.scale(pygame.image.load("tree.png"), (int(4734 / 10), int(4713 / 10)))
 carLong = int(1685 / 14)
 carHeight = int(2780 / 14)
 bigRoadPlace1 = [0, 500]
 bigRoadPlace2 = [0 + 1141, 500]
 bigRoadPlace3 = [0 + 1141 + 1141, 500]
-dolphinPlace = [1024 / 2 - 200 / 2, 700]
+dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
 treePlace = [-1024, 500 - int(2879 / 10)]
 carPlace = [1024 / 2 - 300 / 2, 500 - int(1685 / 14)]
 tipsPlace = [1024 - 450, 50]
