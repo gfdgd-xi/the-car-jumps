@@ -51,7 +51,7 @@ def Down():
             over = True
             while not close:
                 carPlace[1] = carPlace[1] + 5
-                dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
+                #dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
                 time.sleep(0.01)
                 if carPlace[1] > 768:
                     while not dolphinPlace[1] > 768:
@@ -134,6 +134,7 @@ def Time():
     global second
     global minute
     global over
+    global timeSuDu
     global jumpTimes
     global textSurfaceObj2
     second = 0
@@ -159,7 +160,7 @@ def Time():
             dolphinPlace[1] = dolphinPlace[1] + 20
         textSurfaceObj2 = fontObj2.render("Time: {}:{};\nJump Time: {};\nNow: Play".format(
             minuteString, secondString, jumpTimes), False, (250, 250, 250))
-        time.sleep(1)
+        time.sleep(1 / timeSuDu)
     textSurfaceObj2 = fontObj2.render("Time: {}:{};\nJump Time: {};\nNow: Over".format(
         minuteString, secondString, jumpTimes), False, (250, 250, 250))
 
@@ -193,7 +194,7 @@ carHeight = int(2780 / 14)
 bigRoadPlace1 = [0, 500]
 bigRoadPlace2 = [0 + 1141, 500]
 bigRoadPlace3 = [0 + 1141 + 1141, 500]
-dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 720]
+dolphinPlace = [1024 / 2 - int(2918 / 5) / 2, 700]
 treePlace = [-1024, 500 - int(2879 / 10)]
 carPlace = [1024 / 2 - 300 / 2, 500 - int(1685 / 14)]
 tipsPlace = [1024 - 450, 50]
@@ -208,6 +209,8 @@ jumpTime = False
 jumpTimes = 0
 suDu = 5
 suDuOld = suDu
+timeSuDu = 1
+timeSuDuOld = 1
 start = False
 fontObj2 = pygame.font.SysFont('宋体', 20)
 textSurfaceObj2 = fontObj2.render(
@@ -237,9 +240,11 @@ while not close:
                 if quickly:
                     quickly = False
                     suDu = suDuOld
+                    timeSuDu = timeSuDuOld
                 else:
                     quickly = True
                     suDu = suDu * 2
+                    timeSuDu = timeSuDu * 2
     screen.fill(background)
     screen.blit(textSurfaceObj2, textRectObj2)
     screen.blit(dolphin, dolphinPlace)
